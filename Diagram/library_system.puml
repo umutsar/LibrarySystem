@@ -1,0 +1,119 @@
+@startuml
+
+' Database Class
+class Database {
+    -sqlite3* db
+    +Database(const string &dbPath)
+    +~Database()
+    +bool executeQuery(const string &query)
+    +vector<vector<string>> fetchQueryResults(const string &query)
+    +bool addUser(const User &user)
+    +bool addBook(const Book &book)
+    +vector<User*> getUsers()
+    +vector<Book*> getBooks()
+}
+
+' User Class
+abstract class User {
+    -int id
+    -string userID
+    -string name
+    -string surname
+    -string password
+    -bool isActive
+    -bool isAdmin
+    +User(int id, const string &userID, const string &name, 
+    const string &surname, const string &password,
+     bool isActive, bool isAdmin)
+    +int getId() const
+    +string getUserID() const
+    +string getName() const
+    +string getSurname() const
+    +bool getIsActive() const
+    +bool getIsAdmin() const
+    +string getPassword() const
+    +virtual void displayMenu() const = 0
+}
+
+' Admin Class
+class Admin {
+    +Admin(int id, const string &userID, 
+    const string &name, const string &surname, 
+    const string &password, bool isActive)
+    +void displayMenu() const override
+}
+
+' NormalUser Class
+class NormalUser {
+    +NormalUser(int id, const string &userID,
+     const string &name, const string &surname,
+      const string &password, bool isActive)
+    +void displayMenu() const override
+}
+
+' Book Class
+abstract class Book {
+    -int id
+    -string title
+    -string author
+    -string isbn
+    -string publicationDate
+    -bool isAvailable
+    +Book(int id, const string &title, const string &author,
+    const string &isbn, const string &publicationDate, bool isAvailable)
+    +int getId() const
+    +string getTitle() const
+    +string getAuthor() const
+    +string getISBN() const
+    +string getPublicationDate() const
+    +bool getIsAvailable() const
+    +virtual void displayInfo() const = 0
+}
+
+' Novel Class
+class Novel {
+    -string genre
+    +Novel(int id, const string &title, const string &author, 
+    const string &isbn, const string &publicationDate, 
+    bool isAvailable, const string &genre)
+    +void displayInfo() const override
+    +string getGenre() const
+}
+
+' Magazine Class
+class Magazine {
+    -string issueNo
+    +Magazine(int id, const string &title, const string &author, 
+    const string &isbn, const string &publicationDate, 
+    bool isAvailable, const string &issueNo)
+    +void displayInfo() const override
+    +string getIssueNo() const
+}
+
+' HistoryBook Class
+class HistoryBook {
+    -string historicalPeriod
+    +HistoryBook(int id, const string &title, const 
+    string &author, const string &isbn, 
+    const string &publicationDate, bool isAvailable, 
+    const string &historicalPeriod)
+    +void displayInfo() const override
+    +string getHistoricalPeriod() const
+}
+
+' LibrarySystem Class
+class LibrarySystem {
+    -Database db
+    -User* currentUser
+    +LibrarySystem()
+    +void run()
+    +void login()
+    +void logout()
+    +void borrowBook()
+    +void returnBook()
+    +void addBook()
+    +void addUser()
+}
+
+
+@enduml
