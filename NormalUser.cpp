@@ -7,9 +7,9 @@ NormalUser::NormalUser(int id, const string &userID, const string &name, const s
     : User(id, userID, name, surname, password, isActive, false) {}
 
 void NormalUser::displayMenu() const {
-    cout << "Yapmak istediginiz islemi girin:\n";
-    cout << "1- Kitap ödünç al\n";
-    cout << "2- Kitap iade et\n";
-    cout << "0- Çıkış\n";
-    cout << "Seçiminiz: ";
+    cout << "Enter the action you want to make:\n";
+    cout << "1- Borrow a book\n";
+    cout << "2- Return book\n";
+    cout << "0- Exit\n";
+    cout << "Your choice: ";
 }

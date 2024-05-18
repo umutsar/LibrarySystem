@@ -40,7 +40,7 @@ void LibrarySystem::run() {
                     logout();
                     break;
                 default:
-                    cout << "Geçersiz seçim, tekrar deneyin." << endl;
+                    cout << "Invalid selection, try again." << endl;
                     break;
             }
         }
@@ -49,9 +49,9 @@ void LibrarySystem::run() {
 
 void LibrarySystem::login() {
     string userID, password;
-    cout << "Kullanıcı ID: ";
+    cout << "User ID: ";
     cin >> userID;
-    cout << "Şifre: ";
+    cout << "Password: ";
     cin >> password;
 
     vector<User*> users = db.getUsers();
@@ -64,7 +64,7 @@ void LibrarySystem::login() {
     }
 
     if (!currentUser) {
-        cout << "Geçersiz kullanıcı ID veya şifre, tekrar deneyin." << endl;
+        cout << "Invalid user ID or password, try again." << endl;
     }
 }
 
@@ -75,14 +75,14 @@ void LibrarySystem::logout() {
 
 void LibrarySystem::borrowBook() {
     vector<Book*> books = db.getBooks();
-    cout << "Mevcut kitaplar:\n";
+    cout << "Available books:\n";
     for (const auto& book : books) {
         book->displayInfo();
         cout << endl;
     }
 
     string isbn;
-    cout << "Ödünç almak istediğiniz kitabın ISBN numarasını girin: ";
+    cout << "Enter the ISBN number of the book you want to borrow: ";
     cin >> isbn;
 
     for (auto book : books) {
@@ -90,22 +90,22 @@ void LibrarySystem::borrowBook() {
             if (book->getIsAvailable()) {
                 string query = "UPDATE books SET isAvailable = 0 WHERE isbn = '" + isbn + "';";
                 if (db.executeQuery(query)) {
-                    cout << "Kitap başarıyla ödünç alındı.\n";
+                    cout << "The book has been borrowed successfully.\n";
                 } else {
-                    cout << "Kitap ödünç alınırken bir hata oluştu.\n";
+                    cout << "An error occurred while borrowing the book.\n";
                 }
             } else {
-                cout << "Kitap şu anda ödünç alınmış durumda.\n";
+                cout << "The book is currently on loan.\n";
             }
             return;
         }
     }
-    cout << "Girilen ISBN numarasına ait kitap bulunamadı.\n";
+    cout << "The book with the entered ISBN number was not found.\n";
 }
 
 void LibrarySystem::returnBook() {
     string isbn;
-    cout << "İade etmek istediğiniz kitabın ISBN numarasını girin: ";
+    cout << "Enter the ISBN number of the book you want to return: ";
     cin >> isbn;
 
     vector<Book*> books = db.getBooks();
@@ -114,58 +114,58 @@ void LibrarySystem::returnBook() {
             if (!book->getIsAvailable()) {
                 string query = "UPDATE books SET isAvailable = 1 WHERE isbn = '" + isbn + "';";
                 if (db.executeQuery(query)) {
-                    cout << "Kitap başarıyla iade edildi.\n";
+                    cout << "The book was returned successfully.\n";
                 } else {
-                    cout << "Kitap iade edilirken bir hata oluştu.\n";
+                    cout << "An error occurred while returning the book.\n";
                 }
             } else {
-                cout << "Kitap zaten iade edilmiş durumda.\n";
+                cout << "The book has already been returned.\n";
             }
             return;
         }
     }
-    cout << "Girilen ISBN numarasına ait kitap bulunamadı.\n";
+    cout << "The book with the entered ISBN number was not found.\n";
 }
 
 void LibrarySystem::addBook() {
     string type;
-    cout << "Eklemek istediğiniz kitap türünü girin (Novel, Magazine, HistoryBook): ";
+    cout << "Enter the type of book you want to add (Novel, Magazine, HistoryBook): ";
     cin >> type;
 
     string title, author, isbn, publicationDate, genre, issueNo, historicalPeriod;
-    cout << "Başlık: ";
+    cout << "Title: ";
     cin.ignore();
     getline(cin, title);
-    cout << "Yazar: ";
+    cout << "Writer: ";
     getline(cin, author);
     cout << "ISBN: ";
     getline(cin, isbn);
-    cout << "Yayın Tarihi: ";
+    cout << "Release date: ";
     getline(cin, publicationDate);
 
     Book *newBook = nullptr;
 
     if (type == "Novel") {
-        cout << "Tür (Genre): ";
+        cout << "Genre: ";
         getline(cin, genre);
         newBook = new Novel(0, title, author, isbn, publicationDate, true, genre);
     } else if (type == "Magazine") {
-        cout << "Sayı No (Issue No): ";
+        cout << "Issue No: ";
         getline(cin, issueNo);
         newBook = new Magazine(0, title, author, isbn, publicationDate, true, issueNo);
     } else if (type == "HistoryBook") {
-        cout << "Tarihi Dönem (Historical Period): ";
+        cout << "Historical Period: ";
         getline(cin, historicalPeriod);
         newBook = new HistoryBook(0, title, author, isbn, publicationDate, true, historicalPeriod);
     } else {
-        cout << "Geçersiz kitap türü.\n";
+        cout << "Invalid book type.\n";
         return;
     }
 
     if (db.addBook(*newBook)) {
-        cout << "Kitap başarıyla eklendi.\n";
+        cout << "The book has been added successfully.\n";
     } else {
-        cout << "Kitap eklenirken bir hata oluştu.\n";
+        cout << "An error occurred while adding the book.\n";
     }
 
     delete newBook;
@@ -175,16 +175,16 @@ void LibrarySystem::addUser() {
     string name, surname, password, userID;
     bool isAdmin;
 
-    cout << "Kullanıcı ID: ";
+    cout << "User ID: ";
     cin >> userID;
-    cout << "İsim: ";
+    cout << "Name: ";
     cin.ignore();
     getline(cin, name);
-    cout << "Soyisim: ";
+    cout << "Surname: ";
     getline(cin, surname);
-    cout << "Şifre: ";
+    cout << "Password: ";
     getline(cin, password);
-    cout << "Admin mi? (1: Evet, 0: Hayır): ";
+    cout << "Admin ? (1: Yes, 0: No): ";
     cin >> isAdmin;
 
     User *newUser = nullptr;
@@ -196,9 +196,9 @@ void LibrarySystem::addUser() {
     }
 
     if (db.addUser(*newUser)) {
-        cout << "Kullanıcı başarıyla eklendi.\n";
+        cout << "User added successfully.\n";
     } else {
-        cout << "Kullanıcı eklenirken bir hata oluştu.\n";
+        cout << "An error occurred while adding the user.\n";
     }
 
     delete newUser;
